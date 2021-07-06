@@ -1,7 +1,7 @@
 defmodule Facebook do
   @moduledoc """
   Provides API wrappers for the Facebook Graph API
-
+  
   See: https://developers.facebook.com/docs/graph-api
   """
 
@@ -21,7 +21,7 @@ defmodule Facebook do
 
   @typedoc """
   A token which is used to authenticate requests to Facebook's Graph API.
-
+  
   A user access token may be generated with
   [Facebook Login](https://developers.facebook.com/docs/facebook-login/).
   Access tokens for testing purposes may be retrieved from Facebook's
@@ -83,13 +83,13 @@ defmodule Facebook do
 
   @typedoc """
   A type of feed or object.
-
+  
   Feed scopes:
     * `:feed`
     * `:posts`
     * `:promotabled_posts` (Admin permission needed)
     * `:tagged`
-
+  
   Object scopes:
     * `:likes`
     * `:comments`
@@ -98,7 +98,7 @@ defmodule Facebook do
 
   @typedoc """
   A reason for settling a payment dispute.
-
+  
   Reasons:
     * `:GRANTED_REPLACEMENT_ITEM`
     * `:DENIED_REFUND`
@@ -108,7 +108,7 @@ defmodule Facebook do
 
   @typedoc """
   A reason for refunding a payment.
-
+  
   Reasons:
     * `:MALICIOUS_FRAUD`
     * `:FRIENDLY_FRAUD`
@@ -129,10 +129,10 @@ defmodule Facebook do
 
   @doc """
   If you want to use an appsecret proof, pass it into set_app_secret:
-
+  
   ## Example
       iex> Facebook.set_app_secret("app_secret")
-
+  
   See: https://developers.facebook.com/docs/graph-api/securing-requests
   """
   def set_app_secret(app_secret) do
@@ -141,11 +141,11 @@ defmodule Facebook do
 
   @doc """
   Basic user infos of the logged in user specified by the `t:access_token/0`
-
+  
   ## Examples
       iex> Facebook.me("id,first_name", "<Access Token>")
       {:ok, %{"first_name" => "...", "id" => "..."}}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/user/
   """
   @spec me(fields, access_token) :: resp
@@ -162,11 +162,11 @@ defmodule Facebook do
 
   @doc """
   Accounts for the logged in user specified by the `t:access_token/0`
-
+  
   ## Examples
       iex> Facebook.my_accounts("<Access Token>")
       {:ok, %{"data" => [...]}}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/user/accounts
   """
   @spec my_accounts(access_token) :: resp
@@ -184,26 +184,26 @@ defmodule Facebook do
   @doc """
   Publish to a graph edge using the supplied token.
   Publish to a feed. Author (user or page) is determined from the supplied token.
-
+  
   The `t:page_id/0` is the id for the user or page feed to publish to.
   Apps need both `manage_pages` and `publish_pages` permissions to be able to publish as a Page.
   The `publish_actions` permission is required to publish as an individual.
-
+  
   See Facebook's publishing documentation for more info:
-
+  
   * https://developers.facebook.com/docs/pages/publishing
   * https://developers.facebook.com/docs/pages/publishing#personal_post
   * https://developers.facebook.com/docs/facebook-login/permissions#reference-publish_pages
-
+  
   ## Examples
       iex> # publish a message
       iex> Facebook.publish(:feed, "<Feed Id>", [message: "<Message Body"], "<Access Token>")
       {:ok, %{"id" => "{page_id}_{post_id}"}}
-
+  
       iex> # publish a link and message
       iex> Facebook.publish(:feed, "<Feed Id>", [message: "<Message Body", link: "www.example.com"], "<Access Token>")
       {:ok, %{"id" => "{page_id}_{post_id}"}}
-
+  
       iex> # create a Facebook Campaign
       iex> Facebook.publish(:campaigns, "act_1234546", [objective: "LINK_CLICKS", name: "a campaign"], "<Access Token>")
       {:ok, %{"id" => "{campaign_id}"}}
@@ -222,17 +222,17 @@ defmodule Facebook do
 
   @doc """
   Publish media to a feed. Author (user or page) is determined from the supplied token.
-
+  
   The `t:page_id/0` is the id for the user or page feed to publish to.
   Same `:feed` publishing permissions apply.
-
+  
   ## Example
       iex> Facebook.publish(:photo, "<Feed Id>", "<Image Path>", [], "<Access Token>")
       {:ok, %{"id" => photo_id, "post_id" => "{page_id}_{post_id}"}
-
+  
       iex> Facebook.publish(:video, "<Feed Id>", "<Video Path>", [], "<Access Token>")
       {:ok, %{"id" => video_id}
-
+  
   See: https://developers.facebook.com/docs/pages/publishing#fotos_videos
   """
   @spec publish(:photo, page_id, file_path, params, access_token) :: resp
@@ -286,18 +286,18 @@ defmodule Facebook do
 
   @doc """
   A Picture for a Facebook User
-
+  
   `type` may be:
     * `"small"`
     * `"normal"`
     * `"album"`
     * `"large"`
     * `"square"`
-
+  
   ## Example
       iex> Facebook.picture("<Some Id>", "small", "<Access Token>")
       {:ok, %{"data": "..."}}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/user/picture/
   """
   @spec picture(page_id, type :: String.t(), access_token) :: resp
@@ -314,11 +314,11 @@ defmodule Facebook do
 
   @doc """
   A Picture for a Facebook User with custom dimensions
-
+  
   ## Example
       iex> Facebook.picture("<Some Id>", 480, 480, "<Access Token>")
       {:ok, %{"data": "..."}}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/user/picture/
   """
   @spec picture(page_id, width :: integer, height :: integer, access_token) :: resp
@@ -335,11 +335,11 @@ defmodule Facebook do
 
   @doc """
   Likes of the currently logged in user specified by the `t:access_token/0`
-
+  
   ## Example
       iex> Facebook.my_likes("<Access Token>")
       {:ok, %{"data" => [...]}}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/user/likes
   """
   @spec my_likes(access_token) :: resp
@@ -356,11 +356,11 @@ defmodule Facebook do
 
   @doc """
   Retrieves a list of granted permissions
-
+  
   ## Example
       iex> Facebook.permissions("<Some Id>", "<Access Token>")
       {:ok, %{"data" => [%{"permission" => "...", "status" => "..."}]}}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/user/permissions
   """
   @spec permissions(page_id, access_token) :: resp
@@ -377,11 +377,11 @@ defmodule Facebook do
 
   @doc """
   Get the count of fans for the provided `t:page_id/0`
-
+  
   ## Example
       iex> Facebook.fan_count("CocaColaMx", "<Access Token>")
       {:ok, %{"fan_count" => fan_count, "id" => id}}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/page/
   """
   @spec fan_count(page_id, access_token) :: resp
@@ -391,7 +391,7 @@ defmodule Facebook do
 
   @doc """
   Basic Graph object information by object ID
-
+  
   ## Example
       iex> Facebook.get_object("1234567", "<Access Token>")
       {:ok, %{"id" => id}}
@@ -403,11 +403,11 @@ defmodule Facebook do
 
   @doc """
   Get Graph object information for the specified params for the provided object ID
-
+  
   ## Example
       iex> Facebook.get_object("1234567", "<Access Token>", [fields: "id,name"])
       {:ok, %{"id" => id, "name" => name}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/page
   """
   @spec get_object(object_id, access_token, params) :: resp
@@ -424,12 +424,12 @@ defmodule Facebook do
 
   @doc """
   Gets an object edge for a specific object ID
-
+  
   ## Examples
       iex> Facebook.get_object_edge(:adlabels, "act_12345", "<Access Token>")
       iex> Facebook.page_feed(:leads, "1223344332", "<Access Token>", [fields: "created_time,id,ad_id,form_id,field_data"])
       {:ok, %{"data" => [...]}}
-
+  
   """
   # credo:disable-for-lines:1 Credo.Check.Readability.MaxLineLength
   @spec get_object_edge(edge :: atom | String.t(), object_id :: String.t(), access_token, params) ::
@@ -447,11 +447,11 @@ defmodule Facebook do
 
   @doc """
   Basic page information for the provided `t:page_id/0`
-
+  
   ## Example
       iex> Facebook.page("CocaColaMx", "<Access Token>")
       {:ok, %{"id" => id, "name" => name}}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/page
   """
   @spec page(page_id, access_token) :: resp
@@ -461,11 +461,11 @@ defmodule Facebook do
 
   @doc """
   Get page information for the specified fields for the provided `t:page_id/0`
-
+  
   ## Example
       iex> Facebook.page("CocaColaMx", "<Access Token>", "id")
       {:ok, %{"id" => id}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/page
   """
   @spec page(page_id, access_token, fields) :: resp
@@ -477,27 +477,27 @@ defmodule Facebook do
   @doc """
   Gets the feed of posts (including status updates) and links published by this
   page, or by others on this page.
-
+  
   This function can retrieve four `t:scope/0` types:
     * `:feed`
     * `:posts`
     * `:promotable_posts` (*Admin permission needed*)
     * `:tagged`
-
+  
   A `t:scope/0` must be provided. It is an atom, which represents the type of feed.
-
+  
   *A limit of posts may be given. The maximum number that must be provided is
   100.*
-
+  
   ## Examples
       iex> Facebook.page_feed(:posts, "CocaColaMx", "<Access Token>")
       iex> Facebook.page_feed(:tagged, "CocaColaMx", "<Access Token>", 55)
       iex> Facebook.page_feed(:promotable_posts, "CocaColaMx", "<Access Token>")
       iex> Facebook.page_feed(:feed, "CocaColaMx", "<Access Token>", 55, "id,name")
       {:ok, %{"data" => [...]}}
-
+  
   See: https://developers.facebook.com/docs/graph-api/reference/page/feed
-
+  
   """
   # credo:disable-for-lines:2 Credo.Check.Readability.MaxLineLength
   @spec page_feed(scope, page_id, access_token, limit, fields :: String.t()) :: resp
@@ -508,21 +508,21 @@ defmodule Facebook do
 
   @doc """
   Gets the number of elements that a scope has in a given object.
-
+  
   An *object* stands for: post, comment, link, status update, photo.
-
+  
   If you want to get the likes of a page, please see `fan_count/2`.
-
+  
   Expected scopes:
     * `:likes`
     * `:comments`
-
+  
   ## Example
       iex> Facebook.object_count(:likes, "1326382730725053_1326476257382367", "<Access Token>")
       {:ok, 10}
       iex> Facebook.object_count(:comments, "1326382730725053_1326476257382367", "<Access Token>")
       {:ok, 5}
-
+  
   See:
     * https://developers.facebook.com/docs/graph-api/reference/object/likes
     * https://developers.facebook.com/docs/graph-api/reference/object/comments
@@ -548,7 +548,7 @@ defmodule Facebook do
 
   @doc """
   Gets the number of reactions that an object has.
-
+  
   Expected `t:react_type/0`:
     * `:haha`
     * `:wow`
@@ -557,7 +557,7 @@ defmodule Facebook do
     * `:angry`
     * `:love`
     * `:none`
-
+  
   ## Examples
       iex> Facebook.object_count(
         :reaction,
@@ -588,7 +588,7 @@ defmodule Facebook do
 
   @doc """
   Get all the object reactions with single request.
-
+  
   ## Examples
       iex> Facebook.object_count_all("769860109692136_1173416799336463", "<Access Token>")
       {:ok, %{"angry" => 0, "haha" => 1, "like" => 0, "love" => 0, "sad" => 0, "wow" => 0}}
@@ -617,11 +617,11 @@ defmodule Facebook do
 
   @doc """
   Gets payment info about a single payment.
-
+  
   ## Examples
       iex> Facebook.payment("769860109692136", "<App Access Token>", "id,request_id,actions")
       {:ok, %{"request_id" => "abc2387238", "id" => "116397053038597", "actions" => [ %{ "type" => "charge", ... } ] } }
-
+  
   See:
     * https://developers.facebook.com/docs/graph-api/reference/payment
   """
@@ -638,11 +638,11 @@ defmodule Facebook do
 
   @doc """
   Settle a payment dispute.
-
+  
   ## Examples
       iex> Facebook.payment_dispute("769860109692136", "<App Access Token>", :DENIED_REFUND)
       {:ok, %{"success" => true}}
-
+  
   See:
     * https://developers.facebook.com/docs/graph-api/reference/payment/dispute
   """
@@ -661,11 +661,11 @@ defmodule Facebook do
 
   @doc """
   Refund a payment.
-
+  
   ## Examples
       iex> Facebook.payment_refunds("769860109692136", "<App Access Token>", "EUR", 10.99, :CUSTOMER_SERVICE)
       {:ok, %{"success" => true}}
-
+  
   See:
     * https://developers.facebook.com/docs/graph-api/reference/payment/refunds
   """
@@ -690,12 +690,12 @@ defmodule Facebook do
 
   @doc """
   Exchange an authorization code for an access token.
-
+  
   If you are implementing user authentication, the `code` is generated from a Facebook
   endpoint which is outside of the Graph API. Please see the
   [Manually Build a Login Flow](https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow#confirm)
   documentation for more details.
-
+  
   ## Examples
       iex> Facebook.access_token("client_id", "client_secret", "redirect_uri", "code")
       {:ok, %{
@@ -703,7 +703,7 @@ defmodule Facebook do
         "expires_in" => 5183976,
         "token_type" => "bearer"
       }}
-
+  
   See: https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow#confirm
   """
   @spec access_token(client_id, client_secret, String.t(), String.t()) :: resp
@@ -719,7 +719,7 @@ defmodule Facebook do
 
   @doc """
   Exchange a short lived access token for a long lived one
-
+  
   ## Examples
       iex> Facebook.long_lived_access_token("client_id", "client_secret", "access_token")
       {:ok, %{
@@ -727,7 +727,7 @@ defmodule Facebook do
         "expires_in" => 5183976,
         "token_type" => "bearer"
       }}
-
+  
   See: https://developers.facebook.com/docs/facebook-login/access-tokens/expiration-and-extension
   """
   @spec long_lived_access_token(client_id, client_secret, access_token) :: resp
@@ -743,12 +743,12 @@ defmodule Facebook do
 
   @doc """
   Get all test users for an app.
-
+  
   The access token in this case needs to be an app access token.
   See:
     - https://developers.facebook.com/docs/facebook-login/access-tokens#apptokens
     - https://developers.facebook.com/docs/graph-api/reference/v2.8/app/accounts/test-users
-
+  
   ## Examples
       iex> Facebook.test_users("appId", "appId|appSecret")
       {:ok, %{"data" => [
@@ -772,20 +772,20 @@ defmodule Facebook do
 
   @doc """
   Returns metadata about a given access token.
-
+  
   This includes data such as the user for which the token was issued,
   whether the token is still valid, when it expires, and what permissions the
   app has for the given user.
-
+  
   This may be used to programatically debug issues with large sets of access tokens.
-
+  
   An app access token or an app developer's user access token for the
   app associated with the input_token is required to acces.
-
+  
   See:
    - https://developers.facebook.com/docs/graph-api/reference/v2.11/debug_token
    - https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow#checktoken
-
+  
   ## Examples
       iex> Facebook.debug_token("INPUT_TOKEN", "ACCESS_TOKEN")
       {:ok, %{"data" => [
@@ -882,7 +882,7 @@ defmodule Facebook do
   # Hashes the token together with the app secret according to the
   # guidelines of facebook to build an unencoded/raw signature.
   defp signature(str) do
-    :crypto.hmac(:sha256, Config.app_secret(), str)
+    :crypto.mac(:hmac, :sha256, Config.app_secret(), str)
   end
 
   # Uses signature/1 to build a urlsafe base64-encoded signature
